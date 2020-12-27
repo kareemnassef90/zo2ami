@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan("com.zo2ami")
 @EntityScan("com.zo2ami")
 @EnableJpaRepositories("com.zo2ami")
-public class Zo2amiApplication {
+public class Zo2amiApplication { 
 
 	public static void main(String[] args) {
 		SpringApplication.run(Zo2amiApplication.class, args);
