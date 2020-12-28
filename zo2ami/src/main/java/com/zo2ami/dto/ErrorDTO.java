@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.zo2ami.enums.ErrorCodes;
 
 @JsonInclude(Include.NON_NULL)
 public class ErrorDTO implements Serializable {
@@ -14,9 +15,9 @@ public class ErrorDTO implements Serializable {
 	
 	private String errorMessage;
 
-	public ErrorDTO(String errorCode, String errorMessage) {
-		this.errorCode = errorCode;
-		this.errorMessage = errorMessage;
+	public ErrorDTO(ErrorCodes error) {
+		this.errorCode = error.getCode();
+		this.errorMessage = error.getMessage();
 	}
 
 	public String getErrorCode() {

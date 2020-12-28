@@ -1,6 +1,7 @@
 package com.zo2ami.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,7 +14,7 @@ public class CommonDTOWithErrors implements Serializable{
 
 	private ErrorDTO error;
 	
-	private List<ErrorDTO> errors;
+	private List<ErrorDTO> errors = new ArrayList<>();
 
 	public ErrorDTO getError() {
 		return error;

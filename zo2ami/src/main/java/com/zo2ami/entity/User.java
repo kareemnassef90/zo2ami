@@ -17,6 +17,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.TableGenerator;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,8 +31,9 @@ public class User implements UserDetails ,Serializable{
 	
 	private static final long serialVersionUID = -3308435123168651863L;
 
+	@TableGenerator(name="USER_GEN", pkColumnName="sequence_name", pkColumnValue="USER", table="sequence_table", initialValue=0, valueColumnName="hi", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.TABLE, generator="USER_GEN")
 	@Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
 	private long id ;
 	
 	@Column(name = "username")
