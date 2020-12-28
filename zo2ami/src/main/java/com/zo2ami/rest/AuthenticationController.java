@@ -25,6 +25,7 @@ import com.zo2ami.entity.ServiceProvider;
 import com.zo2ami.entity.Subscriber;
 import com.zo2ami.entity.User;
 import com.zo2ami.enums.AccountType;
+import com.zo2ami.enums.ErrorCodes;
 import com.zo2ami.service.ServiceProviderService;
 import com.zo2ami.service.SubscriberService;
 import com.zo2ami.service.UserDetailsServiceImpl;
@@ -72,6 +73,8 @@ public class AuthenticationController {
 	@PostMapping(value = "/register")
 	public ResponseEntity<List<ErrorDTO>> register(@RequestBody UserDTO userDto) {
 		List<ErrorDTO> errors = userDto.validate();
+		if(userDetailsService.loadUserByUsername(userDto.getUsername()) != null)
+			errors.add(new ErrorDTO(ErrorCodes.USERNAME_ALREADY_EXIST));
 		if(errors.isEmpty()) {
 			if(userDto.getAccountType().equals(AccountType.SERVICE_PROVIDER.toString())) {
 				providerService.save(new UserDTO().toServiceProviderDomain(userDto));
