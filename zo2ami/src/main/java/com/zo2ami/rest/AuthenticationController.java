@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.zo2ami.config.JwtRequest;
 import com.zo2ami.config.JwtResponse;
 import com.zo2ami.config.JwtTokenUtil;
 import com.zo2ami.dto.ErrorDTO;
+import com.zo2ami.dto.ResetPasswordDTO;
 import com.zo2ami.dto.UserDTO;
-import com.zo2ami.entity.ServiceProvider;
-import com.zo2ami.entity.Subscriber;
+import com.zo2ami.entity.Customer;
 import com.zo2ami.entity.User;
 import com.zo2ami.enums.AccountType;
 import com.zo2ami.enums.ErrorCodes;
+import com.zo2ami.service.CustomerService;
+import com.zo2ami.service.MailService;
 import com.zo2ami.service.ServiceProviderService;
 import com.zo2ami.service.SubscriberService;
 import com.zo2ami.service.UserDetailsServiceImpl;
@@ -48,7 +48,13 @@ public class AuthenticationController {
 	private ServiceProviderService providerService;
 	
 	@Autowired
+	private CustomerService customerService;
+	
+	@Autowired
 	private SubscriberService subscriberService ;
+	
+	@Autowired
+	MailService mailService;
 	
 
 	@PostMapping(value = "/login")
@@ -85,6 +91,21 @@ public class AuthenticationController {
 		} else {
 			return new ResponseEntity<>(errors, HttpStatus.OK);
 		}
+	}
+	
+	
+	
+	@PostMapping(value = "/forget-password")
+	public ResponseEntity<ResetPasswordDTO> resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO){
+		ResetPasswordDTO response = new ResetPasswordDTO();
+		Customer customer = (Customer) userDetailsService.loadUserByUsername(resetPasswordDTO.getEmail());
+		if(customer == null) {
+			response.getErrors().add(new ErrorDTO(ErrorCodes.MISSING_ACCOUNT_TYPE));
+		} else {
+			customerService.sendResetPasswordMail(customer);
+			mailService.sendForgetPasswordMail(customer);
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 
