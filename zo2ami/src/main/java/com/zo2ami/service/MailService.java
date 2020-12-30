@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.zo2ami.entity.Customer;
 import com.zo2ami.entity.MailTemplate;
+import com.zo2ami.enums.ClientType;
 import com.zo2ami.enums.MailTemplateCode;
 import com.zo2ami.repo.MailTemplateRepository;
 import com.zo2ami.utils.MailTemplateUtils;
@@ -27,14 +29,25 @@ public class MailService {
 
 	@Autowired
     private JavaMailSender emailSender;
+	
+	@Value("${reset.password.mobile.link}")
+	private String mobileLink;
+	
+	@Value("${reset.password.web.link}")
+	private String webLink;
 
 
-	public void sendForgetPasswordMail(Customer customer) {
+	public void sendForgetPasswordMail(Customer customer, String token, ClientType clientType) {
 		MailTemplate template =  mailTemplateRepository.findByCode(MailTemplateCode.FORGET_PASSWORD.toString());
 		Map<String, String> placeholders = new HashMap<>();
 		placeholders.put("username", customer.getUsername());
+		placeholders.put("token", token);
+		if(clientType.equals(ClientType.MOBILE))
+			placeholders.put("link", mobileLink + token);
+		else
+			placeholders.put("link", webLink + token);
 		
-		SimpleMailMessage message = new SimpleMailMessage(); 
+		SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(template.getMailFrom());
         message.setTo(customer.getEmail()); 
         message.setSubject(MailTemplateUtils.buildMail(template.getSubject(), placeholders)); 

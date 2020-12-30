@@ -21,8 +21,10 @@ import com.zo2ami.dto.ErrorDTO;
 import com.zo2ami.dto.ResetPasswordDTO;
 import com.zo2ami.dto.UserDTO;
 import com.zo2ami.entity.Customer;
+import com.zo2ami.entity.PasswordResetToken;
 import com.zo2ami.entity.User;
 import com.zo2ami.enums.AccountType;
+import com.zo2ami.enums.ClientType;
 import com.zo2ami.enums.ErrorCodes;
 import com.zo2ami.service.CustomerService;
 import com.zo2ami.service.MailService;
@@ -53,20 +55,18 @@ public class AuthenticationController {
 	@Autowired
 	private SubscriberService subscriberService ;
 	
-	@Autowired
-	MailService mailService;
 	
 
 	@PostMapping(value = "/login")
 	public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest authenticationRequest)  {
 
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		} 
 
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
@@ -79,7 +79,7 @@ public class AuthenticationController {
 	@PostMapping(value = "/register")
 	public ResponseEntity<List<ErrorDTO>> register(@RequestBody UserDTO userDto) {
 		List<ErrorDTO> errors = userDto.validate();
-		if(userDetailsService.loadUserByUsername(userDto.getUsername()) != null)
+		if(userDetailsService.loadUserByUsername(userDto.getEmail()) != null)
 			errors.add(new ErrorDTO(ErrorCodes.USERNAME_ALREADY_EXIST));
 		if(errors.isEmpty()) {
 			if(userDto.getAccountType().equals(AccountType.SERVICE_PROVIDER.toString())) {
@@ -100,13 +100,39 @@ public class AuthenticationController {
 		ResetPasswordDTO response = new ResetPasswordDTO();
 		Customer customer = (Customer) userDetailsService.loadUserByUsername(resetPasswordDTO.getEmail());
 		if(customer == null) {
-			response.getErrors().add(new ErrorDTO(ErrorCodes.MISSING_ACCOUNT_TYPE));
+			response.getErrors().add(new ErrorDTO(ErrorCodes.USER_NOT_FOUND));
 		} else {
-			customerService.sendResetPasswordMail(customer);
-			mailService.sendForgetPasswordMail(customer);
+			customerService.sendResetPasswordMail(customer, ClientType.valueOf(resetPasswordDTO.getClientType()));
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+	@PostMapping(value = "/forget-password-change")
+	public ResponseEntity<ResetPasswordDTO> changePassword(@RequestBody ResetPasswordDTO resetPasswordDTO){
+		ResetPasswordDTO response = new ResetPasswordDTO();
+		if(resetPasswordDTO.getToken() == null) {
+			response.getErrors().add(new ErrorDTO(ErrorCodes.MISSING_RESET_PASSWORD_TOKEN));
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+		if(resetPasswordDTO.getPassword().equals(resetPasswordDTO.getConfirmPassword())) {
+			response.getErrors().add(new ErrorDTO(ErrorCodes.PASSWORDS_NOT_MATCHED));
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+		PasswordResetToken passwordResetToken = customerService.getResetPasswordToken(resetPasswordDTO.getToken());
+		if(passwordResetToken == null) {
+			response.getErrors().add(new ErrorDTO(ErrorCodes.INVALID_RESET_PASSWORD_TOKEN));
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+		if(!customerService.isValidRestPassworToken(passwordResetToken)) {
+			response.getErrors().add(new ErrorDTO(ErrorCodes.INVALID_RESET_PASSWORD_TOKEN));
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} else {
+			customerService.changePassword(passwordResetToken, resetPasswordDTO.getPassword());
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+	}
+	
+	
 	
 
 

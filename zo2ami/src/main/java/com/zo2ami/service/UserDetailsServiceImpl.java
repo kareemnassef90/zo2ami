@@ -14,8 +14,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	UserRepositoy userRepository;
 	
 	@Override
-	public UserDetails loadUserByUsername(String username)  {
-		return userRepository.findByUsername(username);
+	public UserDetails loadUserByUsername(String email)  {
+		return userRepository.findByEmail(email);
 	}
 
 }

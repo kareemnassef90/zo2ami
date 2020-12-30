@@ -8,7 +8,7 @@ import com.zo2ami.entity.User;
 @Repository
 public interface UserRepositoy extends CrudRepository<User, Long> {
 
-	User findByUsername(String username);
+	User findByEmail(String email);
 	
 	
 }
