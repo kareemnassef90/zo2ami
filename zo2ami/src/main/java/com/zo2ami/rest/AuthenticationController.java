@@ -15,19 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zo2ami.config.JwtRequest;
-import com.zo2ami.config.JwtResponse;
+import com.zo2ami.config.LoginResponseDTO;
 import com.zo2ami.config.JwtTokenUtil;
 import com.zo2ami.dto.ErrorDTO;
 import com.zo2ami.dto.ResetPasswordDTO;
 import com.zo2ami.dto.UserDTO;
-import com.zo2ami.entity.Customer;
 import com.zo2ami.entity.PasswordResetToken;
 import com.zo2ami.entity.User;
 import com.zo2ami.enums.AccountType;
 import com.zo2ami.enums.ClientType;
 import com.zo2ami.enums.ErrorCodes;
 import com.zo2ami.service.CustomerService;
-import com.zo2ami.service.MailService;
 import com.zo2ami.service.ServiceProviderService;
 import com.zo2ami.service.SubscriberService;
 import com.zo2ami.service.UserDetailsServiceImpl;
@@ -58,12 +56,13 @@ public class AuthenticationController {
 	
 
 	@PostMapping(value = "/login")
-	public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest authenticationRequest)  {
-
+	public ResponseEntity<LoginResponseDTO> login(@RequestBody JwtRequest authenticationRequest)  {
+		LoginResponseDTO response = new LoginResponseDTO();
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			response.getErrors().add(new ErrorDTO(ErrorCodes.INVALID_USERNAME_OR_PASSWORD));
+			return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 		} 
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
@@ -71,8 +70,8 @@ public class AuthenticationController {
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
 		User user = (User) userDetails;
-		
-		return ResponseEntity.ok(new JwtResponse(token,user.getAccountType()));
+		response = new LoginResponseDTO(token, user.getAccountType());
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
 	}
 	
@@ -87,7 +86,7 @@ public class AuthenticationController {
 			} else {
 				subscriberService.save(new UserDTO().toSubscriberDomain(userDto));
 			}
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		} else {
 			return new ResponseEntity<>(errors, HttpStatus.OK);
 		}
@@ -116,20 +115,20 @@ public class AuthenticationController {
 		ResetPasswordDTO response = new ResetPasswordDTO();
 		if(resetPasswordDTO.getToken() == null) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.MISSING_RESET_PASSWORD_TOKEN));
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 		if(resetPasswordDTO.getPassword().equals(resetPasswordDTO.getConfirmPassword())) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.PASSWORDS_NOT_MATCHED));
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 		PasswordResetToken passwordResetToken = customerService.getResetPasswordToken(resetPasswordDTO.getToken());
 		if(passwordResetToken == null) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.INVALID_RESET_PASSWORD_TOKEN));
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 		if(!customerService.isValidRestPassworToken(passwordResetToken)) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.INVALID_RESET_PASSWORD_TOKEN));
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		} else {
 			customerService.changePassword(passwordResetToken, resetPasswordDTO.getPassword());
 			return new ResponseEntity<>(response, HttpStatus.OK);

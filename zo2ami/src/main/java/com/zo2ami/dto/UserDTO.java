@@ -265,7 +265,7 @@ public class UserDTO extends CommonDTOWithErrors {
 		if(this.confirmPassword == null || this.confirmPassword.isEmpty())
 			errors.add(new ErrorDTO(ErrorCodes.MISSING_CONFIRM_PASSWORD));
 		if(this.confirmPassword != null && this.password != null && !this.password.equals(this.confirmPassword))
-			errors.add(new ErrorDTO(ErrorCodes.PASSWORDS_MISMATCH));
+			errors.add(new ErrorDTO(ErrorCodes.PASSWORDS_NOT_MATCHED));
 		if(this.mobileNumber == null || this.mobileNumber.isEmpty())
 			errors.add(new ErrorDTO(ErrorCodes.MISSING_MOBILE_NUMBER));
 		if(this.accountType == null || this.accountType.isEmpty()) {
