@@ -99,11 +99,12 @@ public class AuthenticationController {
 		ResetPasswordDTO response = new ResetPasswordDTO();
 		if(resetPasswordDTO.getClientType() == null) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.MISSING_CLIENT_TYPE));
-			return new ResponseEntity<>(response, HttpStatus.OK);
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 		User user = (User) userDetailsService.loadUserByUsername(resetPasswordDTO.getEmail());
 		if(user == null) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.USER_NOT_FOUND));
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		} else {
 			customerService.sendResetPasswordMail(user, ClientType.valueOf(resetPasswordDTO.getClientType()));
 		}
