@@ -39,7 +39,7 @@ public class MailService {
 
 
 	public void sendForgetPasswordMail(User user, String token, ClientType clientType) {
-		MailTemplate template =  mailTemplateRepository.findByCode(MailTemplateCode.FORGET_PASSWORD.toString());
+		MailTemplate template =  mailTemplateRepository.findByCode(MailTemplateCode.FORGET_PASSWORD);
 		Map<String, String> placeholders = new HashMap<>();
 		placeholders.put("username", user.getUsername());
 		placeholders.put("token", token);

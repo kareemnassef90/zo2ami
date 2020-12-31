@@ -98,6 +98,10 @@ public class AuthenticationController {
 	@PostMapping(value = "/forget-password")
 	public ResponseEntity<ResetPasswordDTO> resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO){
 		ResetPasswordDTO response = new ResetPasswordDTO();
+		if(resetPasswordDTO.getClientType() == null) {
+			response.getErrors().add(new ErrorDTO(ErrorCodes.MISSING_CLIENT_TYPE));
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
 		User user = (User) userDetailsService.loadUserByUsername(resetPasswordDTO.getEmail());
 		if(user == null) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.USER_NOT_FOUND));

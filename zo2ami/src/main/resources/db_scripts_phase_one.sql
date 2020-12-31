@@ -1,1 +1,1 @@
-INSERT INTO `mail_template` 
+INSERT INTO `mail_template` (id, body, code,mail_cc,mail_from, subject) values(1, '{link}', 'FORGET_PASSWORD', null, 'knassef.tsc@gmail.com', 'Reset password ');
