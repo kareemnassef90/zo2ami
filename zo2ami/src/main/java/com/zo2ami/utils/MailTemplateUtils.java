@@ -6,12 +6,14 @@ public final class MailTemplateUtils {
 	
 	private MailTemplateUtils() {}
 	
-	public static String buildMail(String rowContent, Map<String, String> data) {
-		String processedContent = "";
-		for (Map.Entry<String, String> element : data.entrySet()) {
-			processedContent = rowContent.replaceAll("\\{"+element.getKey()+"\\}", element.getValue());
+	public static String buildMail(String template, Map<String, String> params) {
+		String newTemplate = template;
+		for(Map.Entry<String, String> entry : params.entrySet()){
+			if(template.contains("{"+entry.getKey()+"}")) {
+				newTemplate = newTemplate.replaceAll( "\\{"+entry.getKey()+"\\}", entry.getValue());
+			}
 		}
-		return processedContent;
+		return newTemplate;
 	}
 
 }

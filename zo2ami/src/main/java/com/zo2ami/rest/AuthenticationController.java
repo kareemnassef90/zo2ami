@@ -80,7 +80,7 @@ public class AuthenticationController {
 	public ResponseEntity<List<ErrorDTO>> register(@RequestBody UserDTO userDto) {
 		List<ErrorDTO> errors = userDto.validate();
 		if(userDetailsService.loadUserByUsername(userDto.getEmail()) != null)
-			errors.add(new ErrorDTO(ErrorCodes.USERNAME_ALREADY_EXIST));
+			errors.add(new ErrorDTO(ErrorCodes.EMAIL_ALREADY_EXISTS));
 		if(errors.isEmpty()) {
 			if(userDto.getAccountType().equals(AccountType.SERVICE_PROVIDER.toString())) {
 				providerService.save(new UserDTO().toServiceProviderDomain(userDto));
