@@ -106,12 +106,16 @@ public class AuthenticationController {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.USER_NOT_FOUND));
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		} else {
-			customerService.sendResetPasswordMail(user, ClientType.valueOf(resetPasswordDTO.getClientType()));
+			try {
+				customerService.sendResetPasswordMail(user, ClientType.valueOf(resetPasswordDTO.getClientType()));
+				return new ResponseEntity<>(HttpStatus.OK);
+			} catch(Exception e) {
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/forget-password-change")
+	@PostMapping(value = "/reset-password")
 	public ResponseEntity<ResetPasswordDTO> changePassword(@RequestBody ResetPasswordDTO resetPasswordDTO){
 		ResetPasswordDTO response = new ResetPasswordDTO();
 		if(resetPasswordDTO.getToken() == null) {
@@ -130,10 +134,13 @@ public class AuthenticationController {
 		if(!customerService.isValidRestPassworToken(passwordResetToken)) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.INVALID_RESET_PASSWORD_TOKEN));
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-		} else {
-			customerService.changePassword(passwordResetToken, resetPasswordDTO.getPassword());
-			return new ResponseEntity<>(response, HttpStatus.OK);
+		} 
+		if(!customerService.isValidPassword(passwordResetToken, resetPasswordDTO.getPassword())) {
+			response.getErrors().add(new ErrorDTO(ErrorCodes.NEW_PASSWORD_EQUALS_THE_CURRENT_PASSWORD));
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
+		customerService.changePassword(passwordResetToken, resetPasswordDTO.getPassword());
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	
