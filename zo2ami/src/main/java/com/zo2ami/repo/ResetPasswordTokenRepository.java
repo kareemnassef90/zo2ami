@@ -8,5 +8,5 @@ import com.zo2ami.entity.PasswordResetToken;
 @Repository
 public interface ResetPasswordTokenRepository extends CrudRepository<PasswordResetToken, Long>{
 
-	public PasswordResetToken findBytToken(String token);
+	public PasswordResetToken findByToken(String token);
 }

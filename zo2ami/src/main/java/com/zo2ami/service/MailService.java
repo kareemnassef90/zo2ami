@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.zo2ami.entity.Customer;
 import com.zo2ami.entity.MailTemplate;
+import com.zo2ami.entity.User;
 import com.zo2ami.enums.ClientType;
 import com.zo2ami.enums.MailTemplateCode;
 import com.zo2ami.repo.MailTemplateRepository;
@@ -37,10 +38,10 @@ public class MailService {
 	private String webLink;
 
 
-	public void sendForgetPasswordMail(Customer customer, String token, ClientType clientType) {
+	public void sendForgetPasswordMail(User user, String token, ClientType clientType) {
 		MailTemplate template =  mailTemplateRepository.findByCode(MailTemplateCode.FORGET_PASSWORD.toString());
 		Map<String, String> placeholders = new HashMap<>();
-		placeholders.put("username", customer.getUsername());
+		placeholders.put("username", user.getUsername());
 		placeholders.put("token", token);
 		if(clientType.equals(ClientType.MOBILE))
 			placeholders.put("link", mobileLink + token);
@@ -49,7 +50,7 @@ public class MailService {
 		
 		SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(template.getMailFrom());
-        message.setTo(customer.getEmail()); 
+        message.setTo(user.getEmail()); 
         message.setSubject(MailTemplateUtils.buildMail(template.getSubject(), placeholders)); 
         message.setText(MailTemplateUtils.buildMail(template.getBody(), placeholders));
         LOGGER.info("START SEND MAIL TO : {} WITH TEMPLATE : {}", message.getTo(), template.getCode());

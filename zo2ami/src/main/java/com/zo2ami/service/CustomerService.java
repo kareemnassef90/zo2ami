@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.zo2ami.entity.Customer;
 import com.zo2ami.entity.PasswordResetToken;
+import com.zo2ami.entity.User;
 import com.zo2ami.enums.ClientType;
 import com.zo2ami.repo.ResetPasswordTokenRepository;
 import com.zo2ami.repo.UserRepositoy;
@@ -33,16 +34,16 @@ public class CustomerService {
 	@Value("${reset.password.expirarion.hours}")
 	private int expirarionHours;
 
-	public void sendResetPasswordMail(Customer customer, ClientType clientType) {
+	public void sendResetPasswordMail(User user, ClientType clientType) {
 		String token = UUID.randomUUID().toString();
-		createResetPasswordToken(customer, token);
-		mailService.sendForgetPasswordMail(customer, token, clientType);
+		createResetPasswordToken(user, token);
+		mailService.sendForgetPasswordMail(user, token, clientType);
 		
 	}
 
-	private void createResetPasswordToken(Customer customer, String token) {
+	private void createResetPasswordToken(User user, String token) {
 		PasswordResetToken resetToken = new PasswordResetToken();
-		resetToken.setCustomer(customer);
+		resetToken.setUser(user);
 		resetToken.setExpiryDate(addExpiryDate());
 		resetToken.setToken(token);
 		resetPasswordTokenRepository.save(resetToken);
@@ -60,13 +61,13 @@ public class CustomerService {
 	}
 
 	public PasswordResetToken getResetPasswordToken(String token) {
-		return resetPasswordTokenRepository.findBytToken(token);
+		return resetPasswordTokenRepository.findByToken(token);
 	}
 
 	public void changePassword(PasswordResetToken passwordResetToken, String password) {
-		Customer customer = passwordResetToken.getCustomer();
-		customer.setPassword(passwordEncoder.encode(password));
-		userRepository.save(customer);
+		User user = passwordResetToken.getUser();
+		user.setPassword(passwordEncoder.encode(password));
+		userRepository.save(user);
 	}
 	
 	
