@@ -27,7 +27,7 @@ import com.zo2ami.enums.Gender;
 
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Entity
-public class User implements UserDetails ,Serializable{
+public abstract class User implements UserDetails ,Serializable{
 	
 	private static final long serialVersionUID = -3308435123168651863L;
 
