@@ -136,6 +136,10 @@ public class AuthenticationController {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.INVALID_RESET_PASSWORD_TOKEN));
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
+		if(passwordResetToken.isExpired()) {
+			response.getErrors().add(new ErrorDTO(ErrorCodes.EXPIRED_RESET_PASSWORD_TOKEN));
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
 		if(!customerService.isValidRestPassworToken(passwordResetToken)) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.INVALID_RESET_PASSWORD_TOKEN));
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

@@ -67,6 +67,8 @@ public class CustomerService {
 		User user = passwordResetToken.getUser();
 		user.setPassword(passwordEncoder.encode(password));
 		userRepository.save(user);
+		passwordResetToken.setExpired(true);
+		resetPasswordTokenRepository.save(passwordResetToken);
 	}
 
 	public boolean isValidPassword(PasswordResetToken passwordResetToken, String newPassword) {

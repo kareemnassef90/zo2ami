@@ -20,7 +20,11 @@ public class PasswordResetToken {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
  
+    @Column(name = "token")
     private String token;
+    
+    @Column(name = "expired")
+    private boolean expired;
  
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -63,6 +67,18 @@ public class PasswordResetToken {
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
+
+	public boolean isExpired() {
+		return expired;
+	}
+
+	public void setExpired(boolean expired) {
+		this.expired = expired;
+	}
+
+
+
+
     
     
     
