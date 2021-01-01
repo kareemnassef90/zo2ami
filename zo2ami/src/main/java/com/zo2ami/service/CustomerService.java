@@ -34,7 +34,7 @@ public class CustomerService {
 	@Value("${reset.password.expirarion.hours}")
 	private int expirarionHours;
 
-	public void sendResetPasswordMail(User user, ClientType clientType) {
+	public void sendResetPasswordMail(User user, ClientType clientType) throws Exception {
 		String token = UUID.randomUUID().toString();
 		createResetPasswordToken(user, token);
 		mailService.sendForgetPasswordMail(user, token, clientType);

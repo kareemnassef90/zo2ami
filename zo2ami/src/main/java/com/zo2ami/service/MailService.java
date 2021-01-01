@@ -38,24 +38,29 @@ public class MailService {
 	private String webLink;
 
 
-	public void sendForgetPasswordMail(User user, String token, ClientType clientType) {
+	public void sendForgetPasswordMail(User user, String token, ClientType clientType) throws Exception {
 		MailTemplate template =  mailTemplateRepository.findByCode(MailTemplateCode.FORGET_PASSWORD);
-		Map<String, String> placeholders = new HashMap<>();
-		placeholders.put("username", user.getUsername());
-		placeholders.put("token", token);
-		if(clientType.equals(ClientType.MOBILE))
-			placeholders.put("link", mobileLink + token);
-		else
-			placeholders.put("link", webLink + token);
-		
-		SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(template.getMailFrom());
-        message.setTo(user.getEmail()); 
-        message.setSubject(MailTemplateUtils.buildMail(template.getSubject(), placeholders)); 
-        message.setText(MailTemplateUtils.buildMail(template.getBody(), placeholders));
-        LOGGER.info("START SEND MAIL TO : {} WITH TEMPLATE : {}", message.getTo(), template.getCode());
-        emailSender.send(message);
-        LOGGER.info("END SEND MAIL TO : {} WITH TEMPLATE : {}", message.getTo(), template.getCode());
+		if(template != null) {
+			Map<String, String> placeholders = new HashMap<>();
+			placeholders.put("username", user.getUsername());
+			placeholders.put("token", token);
+			if(clientType.equals(ClientType.MOBILE))
+				placeholders.put("link", mobileLink + token);
+			else
+				placeholders.put("link", webLink + token);
+			
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setFrom(template.getMailFrom());
+			message.setTo(user.getEmail()); 
+			message.setSubject(MailTemplateUtils.buildMail(template.getSubject(), placeholders)); 
+			message.setText(MailTemplateUtils.buildMail(template.getBody(), placeholders));
+			LOGGER.info("START SEND MAIL TO : {} WITH TEMPLATE : {}", message.getTo(), template.getCode());
+			emailSender.send(message);
+			LOGGER.info("END SEND MAIL TO : {} WITH TEMPLATE : {}", message.getTo(), template.getCode());
+		} else {
+			LOGGER.error("CANNOT FIND MAIL TEMPLATE WITH CODE : {}", MailTemplateCode.FORGET_PASSWORD);
+			throw new Exception();
+		}
 		
 	}
 }

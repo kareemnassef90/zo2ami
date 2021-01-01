@@ -2,6 +2,8 @@ package com.zo2ami.rest;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zo2ami.config.JwtRequest;
-import com.zo2ami.config.LoginResponseDTO;
 import com.zo2ami.config.JwtTokenUtil;
+import com.zo2ami.config.LoginResponseDTO;
 import com.zo2ami.dto.ErrorDTO;
 import com.zo2ami.dto.ResetPasswordDTO;
 import com.zo2ami.dto.UserDTO;
@@ -34,6 +36,8 @@ import com.zo2ami.service.UserDetailsServiceImpl;
 @RequestMapping(value = "/auth")
 @CrossOrigin
 public class AuthenticationController {
+	
+	private static final Logger LOGGER = LogManager.getLogger(AuthenticationController.class);
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -110,6 +114,7 @@ public class AuthenticationController {
 				customerService.sendResetPasswordMail(user, ClientType.valueOf(resetPasswordDTO.getClientType()));
 				return new ResponseEntity<>(HttpStatus.OK);
 			} catch(Exception e) {
+				LOGGER.error("ERROR SEND FORGET PASSWORD MAIL ", e);
 				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
