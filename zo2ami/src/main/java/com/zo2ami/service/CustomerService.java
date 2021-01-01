@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.zo2ami.dto.ResetPasswordDTO;
 import com.zo2ami.entity.PasswordResetToken;
 import com.zo2ami.entity.User;
 import com.zo2ami.enums.ClientType;
