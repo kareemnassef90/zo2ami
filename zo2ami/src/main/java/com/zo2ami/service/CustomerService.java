@@ -56,7 +56,7 @@ public class CustomerService {
 	}
 
 	public boolean isValidRestPassworToken(PasswordResetToken resetToken) {
-		return resetToken != null && resetToken.getExpiryDate().before(new Date());
+		return resetToken != null && new Date().before(resetToken.getExpiryDate());
 	}
 
 	public PasswordResetToken getResetPasswordToken(String token) {
@@ -70,7 +70,7 @@ public class CustomerService {
 	}
 
 	public boolean isValidPassword(PasswordResetToken passwordResetToken, String newPassword) {
-		return !passwordResetToken.getUser().getPassword().equals(passwordEncoder.encode(newPassword));
+		return !passwordEncoder.matches(newPassword, passwordResetToken.getUser().getPassword());
 	}
 	
 	

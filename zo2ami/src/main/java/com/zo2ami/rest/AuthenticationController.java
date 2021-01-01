@@ -127,7 +127,7 @@ public class AuthenticationController {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.MISSING_RESET_PASSWORD_TOKEN));
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
-		if(resetPasswordDTO.getPassword().equals(resetPasswordDTO.getConfirmPassword())) {
+		if(!resetPasswordDTO.getPassword().equals(resetPasswordDTO.getConfirmPassword())) {
 			response.getErrors().add(new ErrorDTO(ErrorCodes.PASSWORDS_NOT_MATCHED));
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
