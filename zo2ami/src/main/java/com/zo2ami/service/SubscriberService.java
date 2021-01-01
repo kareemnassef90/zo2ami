@@ -2,6 +2,7 @@ package com.zo2ami.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,5 +33,9 @@ public class SubscriberService {
 	
 	public List<Subscriber> listAll(){
 		return (List<Subscriber>) subscriberRepository.findAll();
+	}
+	
+	public Optional<Subscriber> findById(Long id){
+		return subscriberRepository.findById(id);
 	}
 }

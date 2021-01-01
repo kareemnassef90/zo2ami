@@ -32,6 +32,11 @@ public class Residence implements Serializable{
 	private Country country ;
 	
 	
+	public Residence() {}
+	
+	public Residence(Long id) {
+		this.id = id;
+	}
 
 	public long getId() {
 		return id;

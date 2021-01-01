@@ -68,6 +68,9 @@ public abstract class User implements UserDetails ,Serializable{
 	@Column(name = "creation_date")
 	private Date creationDate ;
 	
+	@Column(name = "last_update_date")
+	private Date lastUpdateDate ;
+	
 	@ManyToMany
 	@JoinTable(name = "user_role", 
     joinColumns = @JoinColumn(name = "user_id"), 
@@ -170,6 +173,16 @@ public abstract class User implements UserDetails ,Serializable{
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+	
+	
+
+	public Date getLastUpdateDate() {
+		return lastUpdateDate;
+	}
+
+	public void setLastUpdateDate(Date lastUpdateDate) {
+		this.lastUpdateDate = lastUpdateDate;
 	}
 
 	@Override

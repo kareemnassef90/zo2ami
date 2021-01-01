@@ -5,17 +5,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.zo2ami.entity.Country;
 import com.zo2ami.entity.Customer;
+import com.zo2ami.entity.Nationality;
 import com.zo2ami.entity.Permission;
+import com.zo2ami.entity.Residence;
 import com.zo2ami.entity.Role;
-import com.zo2ami.entity.Subscriber;
+import com.zo2ami.entity.ServiceProvider;
+import com.zo2ami.enums.AccountType;
 import com.zo2ami.enums.Gender;
 
-public class CustomerDTO implements Serializable {
+
+@JsonInclude(Include.NON_EMPTY)
+public class CustomerDTO extends CommonDTOWithErrors implements Serializable {
 
 	private static final long serialVersionUID = 6445731753329096797L;
 
-	private long id;
+	private Long id;
 
 	private String username;
 
@@ -33,9 +41,9 @@ public class CustomerDTO implements Serializable {
 
 	private String gender;
 
-	private boolean isDeleted;
+	private Boolean isDeleted;
 
-	private boolean enabled;
+	private Boolean enabled;
 
 	private Date creationDate;
 
@@ -50,12 +58,29 @@ public class CustomerDTO implements Serializable {
 	private String brief;
 	
 	private String accountType;
-
-	public long getId() {
+	
+	private String contactPersonName ;
+	
+	private String contactPersonEmail ;
+	
+	private String contactPersonMobile ;
+	
+	private String location;
+	
+	
+	public CustomerDTO(){
+		
+	}
+	
+	public CustomerDTO(ErrorDTO error) {
+		this.getErrors().add(error);
+	}
+	
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -123,19 +148,19 @@ public class CustomerDTO implements Serializable {
 		this.gender = gender;
 	}
 
-	public boolean isDeleted() {
+	public Boolean isDeleted() {
 		return isDeleted;
 	}
 
-	public void setDeleted(boolean isDeleted) {
+	public void setDeleted(Boolean isDeleted) {
 		this.isDeleted = isDeleted;
 	}
 
-	public boolean isEnabled() {
+	public Boolean isEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
 
@@ -194,6 +219,40 @@ public class CustomerDTO implements Serializable {
 	public void setAccountType(String accountType) {
 		this.accountType = accountType;
 	}
+	
+	
+
+	public String getContactPersonName() {
+		return contactPersonName;
+	}
+
+	public void setContactPersonName(String contactPersonName) {
+		this.contactPersonName = contactPersonName;
+	}
+
+	public String getContactPersonEmail() {
+		return contactPersonEmail;
+	}
+
+	public void setContactPersonEmail(String contactPersonEmail) {
+		this.contactPersonEmail = contactPersonEmail;
+	}
+
+	public String getContactPersonMobile() {
+		return contactPersonMobile;
+	}
+
+	public void setContactPersonMobile(String contactPersonMobile) {
+		this.contactPersonMobile = contactPersonMobile;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
 	public CustomerDTO toDto(Customer domain) {
 		this.id = domain.getId();
@@ -228,7 +287,54 @@ public class CustomerDTO implements Serializable {
 				this.roles.add(roleDto);
 			}
 		}
+		if(domain.getAccountType().equals(AccountType.SERVICE_PROVIDER)) {
+			ServiceProvider provider = (ServiceProvider) domain;
+			this.contactPersonName = provider.getContactPersonName();
+			this.contactPersonEmail = provider.getContactPersonEmail();
+			this.contactPersonMobile = provider.getContactPersonMobile();
+			this.location = provider.getLocation();
+		}
 		return this;
+	}
+
+	public Customer update(Customer customer) {
+		if(this.mobileNumber!= null && !this.mobileNumber.isEmpty())
+			customer.setMobileNumber(this.mobileNumber);
+		if(this.mobileNumber2 != null && !this.mobileNumber2.isEmpty())
+			customer.setMobileNumber2(this.mobileNumber2);
+		if(this.mobileNumber3 != null && !this.mobileNumber3.isEmpty())
+			customer.setMobileNumber3(this.mobileNumber3);
+		if(this.dateOfBirth != null)
+			customer.setDateOfBirth(this.dateOfBirth);
+		if(this.brief != null && !this.brief.isEmpty())
+			customer.setBrief(this.brief);
+		if(this.isDeleted != null)
+			customer.setDeleted(this.isDeleted);
+		if(this.enabled != null)
+			customer.setEnabled(this.enabled);
+		if(this.gender != null && !this.gender.isEmpty())
+			customer.setGender(Gender.valueOf(this.gender));
+		if(this.nationality != null && this.nationality.getId() != null)
+			customer.setNationality(new Nationality(this.nationality.getId()));
+		if(this.country != null && this.country.getId() != null)
+			customer.setCountry(new Country(this.country.getId()));
+		if(this.areaOfResidence != null && this.areaOfResidence.getId() != null)
+			customer.setAreaOfResidence(new Residence(this.areaOfResidence.getId()));
+		
+		
+		if(customer.getAccountType().equals(AccountType.SUBSCRIBER)) {
+//			Subscriber subscriber = (Subscriber) customer;
+			
+		}else if(customer.getAccountType().equals(AccountType.SERVICE_PROVIDER)){
+			ServiceProvider provider = (ServiceProvider) customer;
+			if(this.contactPersonName != null && !this.contactPersonName.isEmpty())
+				provider.setContactPersonName(this.contactPersonName);
+			if(this.contactPersonEmail != null && !this.contactPersonEmail.isEmpty())
+				provider.setContactPersonEmail(this.contactPersonEmail);
+			if(this.contactPersonMobile != null && !this.contactPersonMobile.isEmpty())
+				provider.setContactPersonMobile(this.contactPersonMobile);
+		}
+		return customer;
 	}
 
 //

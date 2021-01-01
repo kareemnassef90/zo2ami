@@ -25,7 +25,11 @@ public class Nationality implements Serializable {
 	@Column(name = "name_en")
 	private String nameEn;
 	
+	public Nationality() {}
 	
+	public Nationality(Long id) {
+		this.id = id;
+	}
 
 	public long getId() {
 		return id;
