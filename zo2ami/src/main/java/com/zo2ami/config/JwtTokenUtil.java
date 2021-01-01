@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.zo2ami.entity.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -51,8 +53,8 @@ public class JwtTokenUtil implements Serializable {
 
 	//generate token for user
 	public String generateToken(UserDetails userDetails) {
-		Map<String, Object> claims = new HashMap<String, Object>();
-		return doGenerateToken(claims, userDetails.getUsername());
+		Map<String, Object> claims = new HashMap<>();
+		return doGenerateToken(claims, ((User)userDetails).getEmail());
 	}
 
 	//while creating the token -
@@ -70,6 +72,6 @@ public class JwtTokenUtil implements Serializable {
 	//validate token
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		final String username = getUsernameFromToken(token);
-		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		return (username.equals(((User)userDetails).getEmail()) && !isTokenExpired(token));
 	}
 }

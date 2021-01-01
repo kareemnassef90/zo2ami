@@ -206,7 +206,7 @@ public class UserDTO extends CommonDTOWithErrors {
 		
 		Subscriber subscriber = new Subscriber();
 		subscriber.setCreationDate(new Date());
-		subscriber.setDateOfBiorth(dto.getDateOfBirth());
+		subscriber.setDateOfBirth(dto.getDateOfBirth());
 		subscriber.setDeleted(false);
 		subscriber.setEmail(dto.getEmail());
 		subscriber.setEnabled(true);
@@ -230,7 +230,7 @@ public class UserDTO extends CommonDTOWithErrors {
 			
 		ServiceProvider serviceProvider = new ServiceProvider();
 		serviceProvider.setCreationDate(new Date());
-		serviceProvider.setDateOfBiorth(dto.getDateOfBirth());
+		serviceProvider.setDateOfBirth(dto.getDateOfBirth());
 		serviceProvider.setDeleted(false);
 		serviceProvider.setEmail(dto.getEmail());
 		serviceProvider.setEnabled(true);

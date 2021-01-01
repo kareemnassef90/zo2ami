@@ -49,7 +49,7 @@ public abstract class User implements UserDetails ,Serializable{
 	private String mobileNumber ;
 	
 	@Column(name = "date_of_birth")
-	private Date dateOfBiorth;
+	private Date dateOfBirth;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "gender")
@@ -116,12 +116,12 @@ public abstract class User implements UserDetails ,Serializable{
 		this.mobileNumber = mobileNumber;
 	}
 
-	public Date getDateOfBiorth() {
-		return dateOfBiorth;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
 
-	public void setDateOfBiorth(Date dateOfBiorth) {
-		this.dateOfBiorth = dateOfBiorth;
+	public void setDateOfBirth(Date dateOfBiorth) {
+		this.dateOfBirth = dateOfBiorth;
 	}
 
 	public Gender getGender() {

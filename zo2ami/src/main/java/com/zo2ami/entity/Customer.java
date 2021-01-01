@@ -15,6 +15,9 @@ public class Customer extends User implements Serializable{
 	@Column(name = "mobile_number_3")
 	private String mobileNumber3 ;
 	
+	@Column(name = "nationality_id")
+	private Nationality nationality;
+	
 	@Column(name = "Country_id")
 	private Country country;
 	
@@ -73,6 +76,14 @@ public class Customer extends User implements Serializable{
 
 	public void setProfilePicturePath(String profilePicturePath) {
 		this.profilePicturePath = profilePicturePath;
+	}
+
+	public Nationality getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(Nationality nationality) {
+		this.nationality = nationality;
 	}
 	
 	

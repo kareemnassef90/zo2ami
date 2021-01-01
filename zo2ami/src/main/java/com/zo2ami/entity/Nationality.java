@@ -1,5 +1,7 @@
 package com.zo2ami.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +11,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "nationality")
-public class Nationality {
+public class Nationality implements Serializable {
 	
+	private static final long serialVersionUID = 1645581647417920942L;
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id ;

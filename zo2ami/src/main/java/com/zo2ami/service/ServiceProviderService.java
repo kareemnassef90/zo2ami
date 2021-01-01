@@ -1,6 +1,7 @@
 package com.zo2ami.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,11 @@ public class ServiceProviderService {
 		serviceProvider.setAccountType(AccountType.SERVICE_PROVIDER);
 		serviceProvider.setCreationDate(new Date());
 		providerRepository.save(serviceProvider);
+	}
+	
+	
+	public List<ServiceProvider> listAll(){
+		return (List<ServiceProvider>) providerRepository.findAll();
 	}
 
 }
