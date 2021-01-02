@@ -3,6 +3,7 @@ package com.zo2ami.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zo2ami.entity.Activity;
 import com.zo2ami.entity.ServiceProvider;
 
@@ -24,8 +25,12 @@ public class ActivityDTO implements Serializable {
 	
 	private CustomerDTO serviceProvider;
 	
+	@JsonFormat
+	  (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date startDate;
 	
+	@JsonFormat
+	  (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date endDate;
 	
 	
