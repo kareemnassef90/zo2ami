@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,12 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.zo2ami.enums.ActivityType;
+
 @Entity
 @Table(name = "activity")
 public class Activity {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name = "name_ar")
@@ -37,11 +41,41 @@ public class Activity {
 	@Column(name = "creation_date")
 	private Date creationDate ;
 	
+	@ManyToOne
+	@JoinColumn(name = "created_by_id")
+	private User createdBy ;
+	
 	@Column(name = "start_date")
 	private Date startDate ;
 	
+	@Column(name = "last_booking_date")
+	private Date lastBookingDate ;
+	
 	@Column(name = "end_date")
 	private Date endDate ;
+	
+	@Column(name = "approved")
+	private Boolean approved;
+	
+	@Column(name= "canceled")
+	private Boolean canceled;
+	
+	@Column(name= "cancellation_approved")
+	private Boolean cancellationApproved;
+	
+	@Column(name= "cancellation_date")
+	private Date cancellationdate;
+	
+	@Column(name= "cancel_reason")
+	private String cancelReason;
+	
+	@ManyToOne
+	@JoinColumn(name = "canceld_by_id")
+	private User canceldBy;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "activity_type")
+	private ActivityType activityType;
 	
 	@ManyToOne
 	@JoinColumn(name = "service_provider_id")
@@ -129,6 +163,78 @@ public class Activity {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public ActivityType getActivityType() {
+		return activityType;
+	}
+
+	public void setActivityType(ActivityType activityType) {
+		this.activityType = activityType;
+	}
+
+	public Boolean getCanceled() {
+		return canceled;
+	}
+
+	public void setCanceled(Boolean canceled) {
+		this.canceled = canceled;
+	}
+
+	public String getCancelReason() {
+		return cancelReason;
+	}
+
+	public void setCancelReason(String cancelReason) {
+		this.cancelReason = cancelReason;
+	}
+
+	public User getCanceldBy() {
+		return canceldBy;
+	}
+
+	public void setCanceldBy(User canceldBy) {
+		this.canceldBy = canceldBy;
+	}
+
+	public Date getLastBookingDate() {
+		return lastBookingDate;
+	}
+
+	public void setLastBookingDate(Date lastBookingDate) {
+		this.lastBookingDate = lastBookingDate;
+	}
+
+	public Boolean getCancellationApproved() {
+		return cancellationApproved;
+	}
+
+	public void setCancellationApproved(Boolean cancellationApproved) {
+		this.cancellationApproved = cancellationApproved;
+	}
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
+	}
+
+	public Date getCancellationdate() {
+		return cancellationdate;
+	}
+
+	public void setCancellationdate(Date cancellationdate) {
+		this.cancellationdate = cancellationdate;
+	}
+
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	

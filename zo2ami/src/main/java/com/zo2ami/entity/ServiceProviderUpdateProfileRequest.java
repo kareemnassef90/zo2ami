@@ -15,7 +15,7 @@ public class ServiceProviderUpdateProfileRequest extends ServiceProvider{
 
 	private static final long serialVersionUID = -728705512323680310L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	@Column(name = "approved")

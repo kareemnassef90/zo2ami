@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zo2ami.dto.ActivityDTO;
+import com.zo2ami.dto.CancelEntityDTO;
 import com.zo2ami.dto.ErrorDTO;
+import com.zo2ami.entity.Activity;
 import com.zo2ami.enums.ErrorCodes;
 import com.zo2ami.service.ActivityService;
 
@@ -41,7 +43,7 @@ public class ActivityController {
 			errors.add(new ErrorDTO(ErrorCodes.MISSING_ACTIVITY_END_DATE));
 		if(!errors.isEmpty())	
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-		activityService.save(activityDto.toDomain());
+		activityService.createActivity(activityDto.toDomain());
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
@@ -58,7 +60,33 @@ public class ActivityController {
 		activityService.listByCategory(categoryId).stream().forEach(activity -> activityDTOs.add(new ActivityDTO().toDto(activity)));
 		return new ResponseEntity<> (activityDTOs, HttpStatus.OK);
 	}
-
+	
+	@PostMapping("/cancel-activity")
+	public ResponseEntity<ErrorDTO> cancelActivity(@RequestBody CancelEntityDTO cancelEntityDTO){
+		if(cancelEntityDTO.getEntityId() == null)
+			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.MISSING_ID), HttpStatus.BAD_REQUEST);
+		if(cancelEntityDTO.getCancelReson() == null || cancelEntityDTO.getCancelReson().isEmpty())
+			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.MISSING_CANCEL_REASON), HttpStatus.BAD_REQUEST);
+		Activity activity = activityService.findById(cancelEntityDTO.getEntityId());
+		if(activity == null)
+			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.INVALID_ID), HttpStatus.BAD_REQUEST);
+		activityService.cancel(activity, cancelEntityDTO.getCancelReson());
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/approve/{activityId}")
+	public ResponseEntity<ErrorDTO> approveActivity(@PathVariable Long activityId){
+		if(activityId == null)
+			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.MISSING_ID), HttpStatus.BAD_REQUEST);
+		Activity activity = activityService.findById(activityId);
+		if(activity == null)
+			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.INVALID_ID), HttpStatus.BAD_REQUEST);
+		if(!activityService.canApprove())
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		activityService.approve(activity);
+		return new ResponseEntity<>(HttpStatus.OK);
+		
+	}
 	
 	
 }
