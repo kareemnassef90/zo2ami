@@ -36,7 +36,7 @@ public class CategoryController {
 			errors.add(new ErrorDTO(ErrorCodes.MISSING_CATEGORY_DISPLAY_ORDER));
 		if(!errors.isEmpty())
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-		categoryService.save(categoryDto.toDomain(categoryDto));
+		categoryService.create(categoryDto.toDomain(categoryDto));
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	

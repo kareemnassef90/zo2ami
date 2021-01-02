@@ -1,5 +1,6 @@
 package com.zo2ami.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class Category {
 	@JoinTable(name = "activity_category", 
     joinColumns = @JoinColumn(name = "category_id"), 
     inverseJoinColumns = @JoinColumn(name = "activity_id"))
-	private List<Activity> activities ;
+	private List<Activity> activities = new ArrayList<>();
 	
 
 	public Long getId() {
