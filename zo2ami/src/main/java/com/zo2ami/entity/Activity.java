@@ -37,6 +37,12 @@ public class Activity {
 	@Column(name = "creation_date")
 	private Date creationDate ;
 	
+	@Column(name = "start_date")
+	private Date startDate ;
+	
+	@Column(name = "end_date")
+	private Date endDate ;
+	
 	@ManyToOne
 	@JoinColumn(name = "service_provider_id")
 	private ServiceProvider serviceProvider;
@@ -107,6 +113,22 @@ public class Activity {
 
 	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	

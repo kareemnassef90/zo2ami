@@ -35,6 +35,10 @@ public class ActivityController {
 			errors.add(new ErrorDTO(ErrorCodes.MISSING_ACTIVITY_NAME_EN));
 		if(activityDto.getPrice() == null)
 			errors.add(new ErrorDTO(ErrorCodes.MISSING_ACTIVITY_PRICE));
+		if(activityDto.getStartDate() == null)
+			errors.add(new ErrorDTO(ErrorCodes.MISSING_ACTIVITY_START_DATE));
+		if(activityDto.getEndDate() == null)
+			errors.add(new ErrorDTO(ErrorCodes.MISSING_ACTIVITY_END_DATE));
 		if(!errors.isEmpty())	
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 		activityService.save(activityDto.toDomain());
