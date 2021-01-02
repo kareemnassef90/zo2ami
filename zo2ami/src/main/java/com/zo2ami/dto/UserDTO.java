@@ -55,6 +55,12 @@ public class UserDTO extends CommonDTOWithErrors {
 	
 	private String location;
 	
+	private List<MultipartFile> certs;
+	
+	private MultipartFile profilePicture;
+	
+	private List<MultipartFile> LegalDocuments;
+	
 	
 	
 	
@@ -195,6 +201,30 @@ public class UserDTO extends CommonDTOWithErrors {
 	public void setContactPersonMobileNumber(String contactPersonMobileNumber) {
 		this.contactPersonMobileNumber = contactPersonMobileNumber;
 	}
+	
+	public List<MultipartFile> getCerts() {
+		return certs;
+	}
+
+	public void setCerts(List<MultipartFile> certs) {
+		this.certs = certs;
+	}
+
+	public MultipartFile getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(MultipartFile profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+
+	public List<MultipartFile> getLegalDocuments() {
+		return LegalDocuments;
+	}
+
+	public void setLegalDocuments(List<MultipartFile> legalDocuments) {
+		LegalDocuments = legalDocuments;
+	}
 
 	public UserDTO toDTO(User domain) {
 		
@@ -277,7 +307,7 @@ public class UserDTO extends CommonDTOWithErrors {
 	}
 
 	private void validateByAccountType(List<ErrorDTO> errors) {
-		if(this.accountType.equals(AccountType.SERVICE_PROVIDER.toString())) {
+		if(this.accountType.equalsIgnoreCase((AccountType.SERVICE_PROVIDER.toString()))) {
 			if(this.contactPersonName == null || this.contactPersonName.isEmpty())
 				errors.add(new ErrorDTO(ErrorCodes.MISSING_CONTACT_PERSON_NAME));
 			if(this.contactPersonName == null || this.contactPersonName.isEmpty())
@@ -286,7 +316,7 @@ public class UserDTO extends CommonDTOWithErrors {
 				errors.add(new ErrorDTO(ErrorCodes.MISSING_CONTACT_PERSON_MOBILE_NUMBER));
 			if(this.location == null || this.location.isEmpty())
 				errors.add(new ErrorDTO(ErrorCodes.MISSING_LOCATION));
-//			if(this.LegalDocument == null)
+//			if(this.LegalDocuments == null || this.LegalDocuments.isEmpty())
 //				errors.add(new ErrorDTO(ErrorCodes.MISSING_LEGAL_DOCUMENT));
 		}
 	}

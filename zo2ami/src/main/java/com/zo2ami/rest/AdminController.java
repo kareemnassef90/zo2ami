@@ -97,5 +97,29 @@ public class AdminController {
 			return new ResponseEntity<>(new CustomerDTO(new ErrorDTO(ErrorCodes.INVALID_ID)), HttpStatus.NOT_FOUND);
 		return new ResponseEntity<>(new CustomerDTO().toDto(provider.get()), HttpStatus.OK);
 	}
+	
+	@PostMapping("/create-activity")
+	public ResponseEntity<CustomerDTO> createActivity(@PathVariable Long id){
+		return null;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
