@@ -21,7 +21,7 @@ import com.zo2ami.enums.ErrorCodes;
 import com.zo2ami.service.ActivityService;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/activity")
 public class ActivityController {
 	
 	@Autowired
@@ -85,7 +85,19 @@ public class ActivityController {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		activityService.approve(activity);
 		return new ResponseEntity<>(HttpStatus.OK);
-		
+	}
+	
+	@GetMapping("/approve-cancellation/{activityId}")
+	public ResponseEntity<ErrorDTO> approveCancellation(@PathVariable Long activityId){
+		if(activityId == null)
+			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.MISSING_ID), HttpStatus.BAD_REQUEST);
+		if(!activityService.canApprove())
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		Activity activity = activityService.findById(activityId);
+		if(activity == null)
+			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.INVALID_ID), HttpStatus.BAD_REQUEST);
+		activityService.approveCancellation(activity);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	

@@ -69,4 +69,11 @@ public class ActivityService {
 			activity.setApproved(true);
 		}
 	}
+
+
+	public void approveCancellation(Activity activity) {
+		if(userDetailsService.getLoggedInUser().getAccountType().equals(AccountType.ADMIN))
+			activity.setCancellationApproved(true);
+		
+	}
 }

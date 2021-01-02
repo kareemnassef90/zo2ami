@@ -73,5 +73,11 @@ public class BookingRequestService {
 	public boolean canApprove() {
 		return userDetailsService.getLoggedInUser().getAccountType().equals(AccountType.ADMIN);
 	}
+	
+	public void approveCancellation(BookingRequest bookingRequest) {
+		if(userDetailsService.getLoggedInUser().getAccountType().equals(AccountType.ADMIN))
+			bookingRequest.setCancellationApproved(true);
+		
+	}
 
 }
