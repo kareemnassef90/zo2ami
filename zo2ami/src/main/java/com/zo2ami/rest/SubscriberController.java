@@ -24,10 +24,23 @@ public class SubscriberController {
 	BookingRequestService bookingRequestService ;
 	
 	@GetMapping("/current-booking_requests/{subscriberId}")
-	public ResponseEntity<List<BookingRequestDTO>> getCurrentBookingRequest(@PathVariable Long subscriberId){		
+	public ResponseEntity<List<BookingRequestDTO>> getCurrentBookingRequest(@PathVariable Long subscriberId){
 		if(subscriberId != null) {
 			List<BookingRequestDTO> requestDTOs = new ArrayList<>();
 			List<BookingRequest> requests = bookingRequestService.getSubscriberCurrentBookingRequests(subscriberId);
+			for (BookingRequest bookingRequest : requests) {
+				requestDTOs.add(new BookingRequestDTO().toDto(bookingRequest));
+			}
+			return new ResponseEntity<>(requestDTOs, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/past-booking_requests/{subscriberId}")
+	public ResponseEntity<List<BookingRequestDTO>> getPastBookingRequest(@PathVariable Long subscriberId){
+		if(subscriberId != null) {
+			List<BookingRequestDTO> requestDTOs = new ArrayList<>();
+			List<BookingRequest> requests = bookingRequestService.getSubscriberPastBookingRequests(subscriberId);
 			for (BookingRequest bookingRequest : requests) {
 				requestDTOs.add(new BookingRequestDTO().toDto(bookingRequest));
 			}

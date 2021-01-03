@@ -18,4 +18,10 @@ public interface BookingRequestRepository extends CrudRepository<BookingRequest,
 			"WHERE br.subscriber_id =:subscriberId AND a.end_date < :CurrentDate ", nativeQuery = true)
 	public List<BookingRequest>getSubscriberCurrentBookingRequests(Long subscriberId, Date CurrentDate);
 	
+	
+	@Query(value = "SELECT br.* FROM booking_request br \n" + 
+			"INNER JOIN activity a ON a.id = br.activity_id\n" + 
+			"WHERE br.subscriber_id =:subscriberId AND a.end_date > :CurrentDate ", nativeQuery = true)
+	public List<BookingRequest>getSubscriberPastBookingRequests(Long subscriberId, Date CurrentDate);
+	
 }

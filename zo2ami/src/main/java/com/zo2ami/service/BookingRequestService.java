@@ -85,5 +85,10 @@ public class BookingRequestService {
 		return bookingRequestRepository.getSubscriberCurrentBookingRequests(subscriberId, new Date());
 		
 	}
+	
+	public List<BookingRequest> getSubscriberPastBookingRequests(Long subscriberId) {
+		return bookingRequestRepository.getSubscriberPastBookingRequests(subscriberId, new Date());
+		
+	}
 
 }
