@@ -54,7 +54,7 @@ public class AdminController {
 	}
 	
 	
-	@PostMapping("/update-service-provider")	
+	@PostMapping("/update-service-provider")
 	public ResponseEntity<ErrorDTO> updateServiceProvider(@RequestBody CustomerDTO providerDto){
 		if(providerDto == null || providerDto.getId() == null )
 			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.MISSING_ID), HttpStatus.BAD_REQUEST);
@@ -66,7 +66,7 @@ public class AdminController {
 	}
 	
 	
-	@PostMapping("/update-subscriber")	
+	@PostMapping("/update-subscriber")
 	public ResponseEntity<ErrorDTO> updateSubscriber(@RequestBody CustomerDTO subscriberDto){
 		if(subscriberDto == null || subscriberDto.getId() == null )
 			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.MISSING_ID), HttpStatus.BAD_REQUEST);
@@ -98,10 +98,6 @@ public class AdminController {
 		return new ResponseEntity<>(new CustomerDTO().toDto(provider.get()), HttpStatus.OK);
 	}
 	
-	@PostMapping("/create-activity")
-	public ResponseEntity<CustomerDTO> createActivity(@PathVariable Long id){
-		return null;
-	}
 	
 	
 	
