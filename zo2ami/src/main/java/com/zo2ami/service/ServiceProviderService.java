@@ -8,13 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.zo2ami.entity.Country;
-import com.zo2ami.entity.Nationality;
-import com.zo2ami.entity.Residence;
 import com.zo2ami.entity.ServiceProvider;
 import com.zo2ami.entity.ServiceProviderUpdateProfileRequest;
 import com.zo2ami.enums.AccountType;
-import com.zo2ami.enums.Gender;
 import com.zo2ami.repo.ServiceProviderRepository;
 
 @Service

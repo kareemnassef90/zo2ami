@@ -23,7 +23,7 @@ public class ServiceProviderUpdateProfileRequest extends ServiceProvider{
 	
 	@ManyToOne
 	@JoinColumn(name = "admin_id")
-	private Admin approvedBy;
+	private User approvedBy;
 	
 	
 
@@ -45,11 +45,11 @@ public class ServiceProviderUpdateProfileRequest extends ServiceProvider{
 		this.approved = approved;
 	}
 
-	public Admin getApprovedBy() {
+	public User getApprovedBy() {
 		return approvedBy;
 	}
 
-	public void setApprovedBy(Admin approvedBy) {
+	public void setApprovedBy(User approvedBy) {
 		this.approvedBy = approvedBy;
 	}
 	
