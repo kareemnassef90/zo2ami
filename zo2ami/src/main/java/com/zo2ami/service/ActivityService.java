@@ -1,5 +1,6 @@
 package com.zo2ami.service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zo2ami.dto.ErrorDTO;
 import com.zo2ami.entity.Activity;
 import com.zo2ami.entity.User;
 import com.zo2ami.enums.AccountType;
@@ -76,4 +78,12 @@ public class ActivityService {
 			activity.setCancellationApproved(true);
 		
 	}
+
+
+	public List<Activity> listAvailableAtivities(){
+		return (List<Activity>) activityRepository.findAvailableActivities();
+	}
+	
+	
+	
 }

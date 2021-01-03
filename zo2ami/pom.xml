@@ -65,7 +65,11 @@
 			<version>2.2.5.RELEASE</version>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.4.5</version>
+		</dependency>
 
 	</dependencies>
 

@@ -100,5 +100,12 @@ public class ActivityController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@GetMapping("/list-available-activities")
+	public ResponseEntity<List<ActivityDTO>> listAvailableAtivities(){
+		List<ActivityDTO> activityDTOs = new ArrayList<>();
+		activityService.listAvailableAtivities().stream().forEach(activity -> activityDTOs.add(new ActivityDTO().toDto(activity)));
+		return new ResponseEntity<> (activityDTOs, HttpStatus.OK);
+	}
+	
 	
 }

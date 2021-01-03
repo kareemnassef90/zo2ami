@@ -31,7 +31,7 @@ public class UpdateRequestsController {
 		for (ServiceProviderUpdateProfileRequest serviceProviderUpdateProfileRequest : updateRequests) {
 			updateRequestDTOs.add(new ServiceProviderUpdateProfileRequestDTO().toDto(serviceProviderUpdateProfileRequest));
 		}
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(updateRequestDTOs, HttpStatus.OK);
 	}
 	
 	

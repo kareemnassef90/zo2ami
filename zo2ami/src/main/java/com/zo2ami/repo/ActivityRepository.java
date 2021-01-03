@@ -17,4 +17,7 @@ public interface ActivityRepository extends CrudRepository<Activity, Long>{
 			"WHERE ac.category_id=:categoryId", nativeQuery = true)
 	public List<Activity>findAllByCategoryId(Long categoryId);
 	
+	@Query(value = "select * from activity where start_date > CURDATE()", nativeQuery = true)
+	public List<Activity>findAvailableActivities();
+	
 }
