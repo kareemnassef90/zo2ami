@@ -28,7 +28,6 @@ public class BookingRequestService {
 		bookingRequest.setSubscriber(userDetailsService.getLoggedInUser());
 		bookingRequest.setCreationDate(new Date());
 		bookingRequest.setPaid(false);
-		bookingRequest.setApproved(false);
 		bookingRequestRepository.save(bookingRequest);
 	}
 
@@ -63,13 +62,6 @@ public class BookingRequestService {
 
 	}
 
-	public void approveRequest(BookingRequest bookingRequest) {
-		if(userDetailsService.getLoggedInUser().getAccountType().equals(AccountType.ADMIN)) {
-			bookingRequest.setApproved(true);
-			bookingRequestRepository.save(bookingRequest);
-		}
-		
-	}
 
 	public boolean canApprove() {
 		return userDetailsService.getLoggedInUser().getAccountType().equals(AccountType.ADMIN);

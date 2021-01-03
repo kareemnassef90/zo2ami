@@ -32,9 +32,6 @@ public class BookingRequest {
 	@JoinColumn(name = "subscriber_id")
 	private User subscriber;
 	
-	@Column(name = "approved")
-	private Boolean approved;
-	
 	@Column(name = "paid")
 	private Boolean paid;
 	
@@ -92,14 +89,6 @@ public class BookingRequest {
 
 	public void setSubscriber(User subscriber) {
 		this.subscriber = subscriber;
-	}
-
-	public Boolean getApproved() {
-		return approved;
-	}
-
-	public void setApproved(Boolean approved) {
-		this.approved = approved;
 	}
 
 	public Boolean getPaid() {

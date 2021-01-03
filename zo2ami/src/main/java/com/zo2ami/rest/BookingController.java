@@ -56,18 +56,18 @@ public class BookingController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/approve/{bookingRequestId}")
-	public ResponseEntity<ErrorDTO> approveBooking(@PathVariable Long bookingRequestId){
-		if(bookingRequestId == null)
-			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.MISSING_ID), HttpStatus.BAD_REQUEST);
-		BookingRequest bookingRequest = bookingRequestService.findById(bookingRequestId);
-		if(bookingRequest == null)
-			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.INVALID_ID), HttpStatus.BAD_REQUEST);
-		if(!bookingRequestService.canApprove())
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		bookingRequestService.approveRequest(bookingRequest);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+//	@GetMapping("/approve/{bookingRequestId}")
+//	public ResponseEntity<ErrorDTO> approveBooking(@PathVariable Long bookingRequestId){
+//		if(bookingRequestId == null)
+//			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.MISSING_ID), HttpStatus.BAD_REQUEST);
+//		BookingRequest bookingRequest = bookingRequestService.findById(bookingRequestId);
+//		if(bookingRequest == null)
+//			return new ResponseEntity<>(new ErrorDTO(ErrorCodes.INVALID_ID), HttpStatus.BAD_REQUEST);
+//		if(!bookingRequestService.canApprove())
+//			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//		bookingRequestService.approveRequest(bookingRequest);
+//		return new ResponseEntity<>(HttpStatus.OK);
+//	}
 	
 	@GetMapping("/approve-cancellation/{bookingRequestId}")
 	public ResponseEntity<ErrorDTO> approveCancellation(@PathVariable Long bookingRequestId){

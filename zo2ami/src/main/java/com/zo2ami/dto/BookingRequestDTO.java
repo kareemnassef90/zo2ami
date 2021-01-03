@@ -17,8 +17,6 @@ private Long id;
 	
 	private UserDTO subscriber;
 	
-	private Boolean approved;
-	
 	private Boolean paid;
 	
 	private String paymentMethod;
@@ -71,14 +69,6 @@ private Long id;
 
 	public void setSubscriber(UserDTO subscriber) {
 		this.subscriber = subscriber;
-	}
-
-	public Boolean getApproved() {
-		return approved;
-	}
-
-	public void setApproved(Boolean approved) {
-		this.approved = approved;
 	}
 
 	public Boolean getPaid() {
@@ -141,7 +131,6 @@ private Long id;
 	public BookingRequestDTO toDto(BookingRequest domain) {
 		this.id = domain.getId();
 		this.canceled = domain.getCanceled();
-		this.approved = domain.getApproved();
 		this.cancellationApproved = domain.getCancellationApproved();
 		this.cancellationdate = domain.getCancellationdate();
 		this.cancelReson = domain.getCancelReson();
