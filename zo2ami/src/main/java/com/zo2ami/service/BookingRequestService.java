@@ -1,6 +1,7 @@
 package com.zo2ami.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,11 @@ public class BookingRequestService {
 	public void approveCancellation(BookingRequest bookingRequest) {
 		if(userDetailsService.getLoggedInUser().getAccountType().equals(AccountType.ADMIN))
 			bookingRequest.setCancellationApproved(true);
+		
+	}
+
+	public List<BookingRequest> getSubscriberCurrentBookingRequests(Long subscriberId) {
+		return bookingRequestRepository.getSubscriberCurrentBookingRequests(subscriberId, new Date());
 		
 	}
 
