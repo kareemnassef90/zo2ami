@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zo2ami.config.JwtRequest;
 import com.zo2ami.config.JwtTokenUtil;
 import com.zo2ami.config.LoginResponseDTO;
+import com.zo2ami.dto.CustomerDTO;
 import com.zo2ami.dto.ErrorDTO;
 import com.zo2ami.dto.ResetPasswordDTO;
 import com.zo2ami.dto.UserDTO;
+import com.zo2ami.entity.Customer;
 import com.zo2ami.entity.PasswordResetToken;
 import com.zo2ami.entity.User;
 import com.zo2ami.enums.AccountType;
@@ -75,6 +77,7 @@ public class AuthenticationController {
 
 		User user = (User) userDetails;
 		response = new LoginResponseDTO(token, user.getAccountType());
+		response.setCustomer(new CustomerDTO().toDto((Customer)user));
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
 	}

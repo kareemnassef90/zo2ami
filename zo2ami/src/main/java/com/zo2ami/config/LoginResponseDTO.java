@@ -3,6 +3,7 @@ package com.zo2ami.config;
 import java.io.Serializable;
 
 import com.zo2ami.dto.CommonDTOWithErrors;
+import com.zo2ami.dto.CustomerDTO;
 import com.zo2ami.enums.AccountType;
 
 public class LoginResponseDTO extends CommonDTOWithErrors implements Serializable {
@@ -12,6 +13,9 @@ public class LoginResponseDTO extends CommonDTOWithErrors implements Serializabl
 	private String jwttoken;
 	
 	private  AccountType accountType;
+	
+	private CustomerDTO customer;
+	
 
 	public LoginResponseDTO(){
 		
@@ -39,6 +43,14 @@ public class LoginResponseDTO extends CommonDTOWithErrors implements Serializabl
 
 	public void setAccountType(AccountType accountType) {
 		this.accountType = accountType;
+	}
+
+	public CustomerDTO getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(CustomerDTO customer) {
+		this.customer = customer;
 	}
 	
 
