@@ -174,9 +174,9 @@ public class ActivityDTO implements Serializable {
 		this.discounted = activity.getDiscounted();
 		this.lastBookingDate = activity.getLastBookingDate();
 		if(activity.getLastBookingDate() != null)
-			this.available = activity.getLastBookingDate().before(new Date());
+			this.available = activity.getLastBookingDate().after(new Date());
 		else if(activity.getStartDate() != null)
-			this.available = activity.getStartDate().before(new Date());
+			this.available = activity.getEndDate().after(new Date());
 		if(activity.getServiceProvider() != null)
 			this.serviceProvider = new CustomerDTO().toDto(activity.getServiceProvider());
 		return this;
