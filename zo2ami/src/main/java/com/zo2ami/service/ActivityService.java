@@ -1,14 +1,15 @@
 package com.zo2ami.service;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.zo2ami.dto.ErrorDTO;
 import com.zo2ami.entity.Activity;
 import com.zo2ami.entity.User;
 import com.zo2ami.enums.AccountType;
@@ -34,8 +35,9 @@ public class ActivityService {
 	}
 	
 	
-	public List<Activity> list(){
-		return (List<Activity>) activityRepository.findAll();
+	public Page<Activity> list(int pageNumber, int pageSize){
+		Pageable page = PageRequest.of(pageNumber - 1, pageSize);
+		return  activityRepository.findAll(page);
 	}
 	
 	public List<Activity> listByCategory(Long categoryId){
@@ -80,8 +82,9 @@ public class ActivityService {
 	}
 
 
-	public List<Activity> listAvailableAtivities(){
-		return (List<Activity>) activityRepository.findAvailableActivities();
+	public Page<Activity> listAvailableAtivities(int pageNumber, int pageSize){
+		Pageable page = PageRequest.of(pageNumber - 1, pageSize);
+		return activityRepository.findAvailableActivities(page);
 	}
 	
 	

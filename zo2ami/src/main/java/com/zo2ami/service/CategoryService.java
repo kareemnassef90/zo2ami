@@ -20,6 +20,7 @@ public class CategoryService {
 	
 	public void create(Category category) {
 		category.setCreationDate(new Date());
+		category.setEnabled(true);
 		categoryRepository.save(category);
 	}
 	

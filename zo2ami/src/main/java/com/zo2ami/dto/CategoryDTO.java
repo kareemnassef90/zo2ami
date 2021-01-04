@@ -12,6 +12,8 @@ public class CategoryDTO implements Serializable{
 	
 	private Long id;
 	
+	private boolean enabled;
+	
 	private String nameAr;
 	
 	private String nameEn;
@@ -54,8 +56,14 @@ public class CategoryDTO implements Serializable{
 		this.displayOrder = displayOrder;
 	}
 	
-	
-	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public List<ActivityDTO> getActivites() {
 		return activites;
 	}
@@ -69,6 +77,7 @@ public class CategoryDTO implements Serializable{
 		category.setNameAr(this.nameAr);
 		category.setNameEn(this.nameEn);
 		category.setDisplayOrder(this.displayOrder);
+		category.setEnabled(this.enabled);
 		return category;
 	}
 	
@@ -76,6 +85,7 @@ public class CategoryDTO implements Serializable{
 		this.id = category.getId();
 		this.nameAr = category.getNameAr();
 		this.nameEn = category.getNameEn();
+		this.enabled = category.isEnabled();
 		this.displayOrder = category.getDisplayOrder();
 		if(category.getActivities() != null)
 			category.getActivities().stream().forEach(activity -> this.getActivites().add(new ActivityDTO().toDto(activity)));

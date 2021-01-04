@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zo2ami.dto.ActivityDTO;
 import com.zo2ami.dto.CancelEntityDTO;
 import com.zo2ami.dto.ErrorDTO;
+import com.zo2ami.dto.PageDTO;
+import com.zo2ami.dto.PageRequestDTO;
 import com.zo2ami.entity.Activity;
 import com.zo2ami.enums.ErrorCodes;
 import com.zo2ami.service.ActivityService;
@@ -47,11 +50,15 @@ public class ActivityController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/list-activities")
-	public ResponseEntity<List<ActivityDTO>> listAll(){
+	@PostMapping("/list-activities")
+	public ResponseEntity<PageDTO<ActivityDTO>> listAll(@RequestBody PageRequestDTO pageRequest){
 		List<ActivityDTO> activityDTOs = new ArrayList<>();
-		activityService.list().stream().forEach(activity -> activityDTOs.add(new ActivityDTO().toDto(activity)));
-		return new ResponseEntity<> (activityDTOs, HttpStatus.OK);
+		PageDTO<ActivityDTO> pageResonse = new PageDTO<>();
+		Page<Activity> page = activityService.list(pageRequest.getPageNumber(), pageRequest.getPageSize());
+		page.get().forEach(activity -> activityDTOs.add(new ActivityDTO().toDto(activity)));
+		pageResonse.setList(activityDTOs);
+		pageResonse.setTotalCount(page.getTotalElements());
+		return new ResponseEntity<> (pageResonse, HttpStatus.OK);
 	}
 	
 	@GetMapping("/list-category-activities/{categoryId}")
@@ -100,11 +107,15 @@ public class ActivityController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/list-available-activities")
-	public ResponseEntity<List<ActivityDTO>> listAvailableAtivities(){
+	@PostMapping("/list-available-activities")
+	public ResponseEntity<PageDTO<ActivityDTO>> listAvailableAtivities(@RequestBody PageRequestDTO pageRequest){
 		List<ActivityDTO> activityDTOs = new ArrayList<>();
-		activityService.listAvailableAtivities().stream().forEach(activity -> activityDTOs.add(new ActivityDTO().toDto(activity)));
-		return new ResponseEntity<> (activityDTOs, HttpStatus.OK);
+		PageDTO<ActivityDTO> pageResonse = new PageDTO<>();
+		Page<Activity> page = activityService.listAvailableAtivities(pageRequest.getPageNumber(), pageRequest.getPageSize());
+		page.get().forEach(activity -> activityDTOs.add(new ActivityDTO().toDto(activity)));
+		pageResonse.setList(activityDTOs);
+		pageResonse.setTotalCount(page.getTotalElements());
+		return new ResponseEntity<> (pageResonse, HttpStatus.OK);
 	}
 	
 	

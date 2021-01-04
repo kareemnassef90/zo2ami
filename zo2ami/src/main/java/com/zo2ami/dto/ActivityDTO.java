@@ -23,15 +23,25 @@ public class ActivityDTO implements Serializable {
 	
 	private Double price;
 	
+	private Boolean discounted;
+	
+	private Double originalPrice;
+	
+	private int rateCount;
+	
 	private CustomerDTO serviceProvider;
 	
 	@JsonFormat
-	  (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	  (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private Date startDate;
 	
 	@JsonFormat
-	  (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	  (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private Date endDate;
+	
+	@JsonFormat
+	  (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+	private Date lastBookingDate;
 	
 	
 	
@@ -107,6 +117,38 @@ public class ActivityDTO implements Serializable {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+	
+	public Date getLastBookingDate() {
+		return lastBookingDate;
+	}
+
+	public void setLastBookingDate(Date lastBookingDate) {
+		this.lastBookingDate = lastBookingDate;
+	}
+	
+	public Boolean getDiscounted() {
+		return discounted;
+	}
+
+	public void setDiscounted(Boolean discounted) {
+		this.discounted = discounted;
+	}
+
+	public Double getOriginalPrice() {
+		return originalPrice;
+	}
+
+	public void setOriginalPrice(Double originalPrice) {
+		this.originalPrice = originalPrice;
+	}
+
+	public int getRateCount() {
+		return rateCount;
+	}
+
+	public void setRateCount(int rateCount) {
+		this.rateCount = rateCount;
+	}
 
 	public ActivityDTO toDto(Activity activity) {
 		this.id = activity.getId();
@@ -117,6 +159,10 @@ public class ActivityDTO implements Serializable {
 		this.rate = activity.getRate();
 		this.startDate = activity.getStartDate();
 		this.endDate = activity.getEndDate();
+		this.rateCount = activity.getRateCount();
+		this.originalPrice = activity.getOriginalPrice();
+		this.discounted = activity.getDiscounted();
+		this.lastBookingDate = activity.getLastBookingDate();
 		if(activity.getServiceProvider() != null)
 			this.serviceProvider = new CustomerDTO().toDto(activity.getServiceProvider());
 		return this;
@@ -131,6 +177,10 @@ public class ActivityDTO implements Serializable {
 		activity.setRate(this.rate);
 		activity.setStartDate(this.startDate);
 		activity.setEndDate(this.endDate);
+		activity.setLastBookingDate(this.lastBookingDate);
+		activity.setDiscounted(this.discounted);
+		activity.setOriginalPrice(this.originalPrice);
+		activity.setRateCount(this.rateCount);
 		if(this.serviceProvider != null && this.serviceProvider.getId() != null) {
 			ServiceProvider provider = new ServiceProvider();
 			provider.setId(this.serviceProvider.getId());

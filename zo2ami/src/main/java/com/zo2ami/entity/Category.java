@@ -22,6 +22,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(name = "enabled")
+	private boolean enabled ;
+	
 	@Column(name = "creation_date")
 	private Date creationDate;
 	
@@ -87,6 +90,14 @@ public class Category {
 
 	public void setActivities(List<Activity> activities) {
 		this.activities = activities;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 	

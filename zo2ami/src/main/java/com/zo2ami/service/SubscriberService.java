@@ -1,10 +1,12 @@
 package com.zo2ami.service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +33,9 @@ public class SubscriberService {
 	}
 	
 	
-	public List<Subscriber> listAll(){
-		return (List<Subscriber>) subscriberRepository.findAll();
+	public Page<Subscriber> listAll(int pageNumber, int pageSize){
+		Pageable page = PageRequest.of(pageNumber - 1, pageSize);
+		return subscriberRepository.findAll(page);
 	}
 	
 	public Optional<Subscriber> findById(Long id){

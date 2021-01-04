@@ -69,6 +69,15 @@ public class Activity {
 	@Column(name= "cancel_reason")
 	private String cancelReason;
 	
+	@Column(name = "discounted")
+	private Boolean discounted;
+	
+	@Column(name = "original_price")
+	private Double originalPrice;
+	
+	@Column(name  = "rate_count")
+	private int rateCount;
+	
 	@ManyToOne
 	@JoinColumn(name = "canceld_by_id")
 	private User canceldBy;
@@ -235,6 +244,30 @@ public class Activity {
 
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public Boolean getDiscounted() {
+		return discounted;
+	}
+
+	public void setDiscounted(Boolean discounted) {
+		this.discounted = discounted;
+	}
+
+	public Double getOriginalPrice() {
+		return originalPrice;
+	}
+
+	public void setOriginalPrice(Double originalPrice) {
+		this.originalPrice = originalPrice;
+	}
+
+	public int getRateCount() {
+		return rateCount;
+	}
+
+	public void setRateCount(int rateCount) {
+		this.rateCount = rateCount;
 	}
 
 	
