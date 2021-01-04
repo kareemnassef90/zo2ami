@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zo2ami.entity.Activity;
 import com.zo2ami.entity.User;
@@ -23,8 +24,11 @@ public class ActivityService {
 	
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
+	
+	@Autowired
+	StorageService storageService;
 
-	public void createActivity(Activity activity) {
+	public void createActivity(Activity activity/* , List<MultipartFile> pics */) {
 		User loggedInUser = userDetailsService.getLoggedInUser();
 		if(loggedInUser.getAccountType().equals(AccountType.ADMIN)) {
 			activity.setApproved(true);
@@ -32,6 +36,10 @@ public class ActivityService {
 		activity.setCreatedBy(loggedInUser);
 		activity.setCreationDate(new Date());
 		activityRepository.save(activity);
+		/*
+		 * if(pics != null && !pics.isEmpty()) storageService.saveActivityPics(pics,
+		 * activity.getId());
+		 */
 	}
 	
 	

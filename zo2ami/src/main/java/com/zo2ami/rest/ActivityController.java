@@ -46,7 +46,7 @@ public class ActivityController {
 			errors.add(new ErrorDTO(ErrorCodes.MISSING_ACTIVITY_END_DATE));
 		if(!errors.isEmpty())	
 			return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-		activityService.createActivity(activityDto.toDomain());
+		activityService.createActivity(activityDto.toDomain()/* , activityDto.getPics() */);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	

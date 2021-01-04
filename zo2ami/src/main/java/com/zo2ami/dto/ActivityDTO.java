@@ -2,6 +2,9 @@ package com.zo2ami.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zo2ami.entity.Activity;
@@ -44,6 +47,8 @@ public class ActivityDTO implements Serializable {
 	@JsonFormat
 	  (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private Date lastBookingDate;
+	
+	private List<MultipartFile> pics;
 	
 	
 	
@@ -158,6 +163,14 @@ public class ActivityDTO implements Serializable {
 
 	public void setAvailable(Boolean available) {
 		this.available = available;
+	}
+	
+	public List<MultipartFile> getPics() {
+		return pics;
+	}
+
+	public void setPics(List<MultipartFile> pics) {
+		this.pics = pics;
 	}
 
 	public ActivityDTO toDto(Activity activity) {

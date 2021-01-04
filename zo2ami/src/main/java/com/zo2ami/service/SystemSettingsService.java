@@ -12,7 +12,7 @@ import com.zo2ami.repo.SystemSettingsRepository;
 public class SystemSettingsService {
 
 	@Autowired
-	SystemSettingsRepository systemSettingsRepository ;
+	private SystemSettingsRepository systemSettingsRepository ;
 	
 	
 	public SystemSettings getSystemSettings(){

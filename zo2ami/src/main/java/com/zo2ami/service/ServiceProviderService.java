@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zo2ami.entity.ServiceProvider;
 import com.zo2ami.entity.ServiceProviderUpdateProfileRequest;
@@ -29,14 +30,21 @@ public class ServiceProviderService {
 	UserDetailsServiceImpl userDetailsService;
 	
 	@Autowired
+	StorageService storageService;
+	
+	@Autowired
 	ServiceProviderUpdateProfileRequestService providerUpdateProfileRequestService;
 	
-	public void save(ServiceProvider serviceProvider) {
+	public void save(ServiceProvider serviceProvider/* , List<MultipartFile> docs, MultipartFile profilePic */) {
 		serviceProvider.setPassword(passwordEncoder.encode(serviceProvider.getPassword()));
 		serviceProvider.setAccountType(AccountType.SERVICE_PROVIDER);
 		serviceProvider.setCreationDate(new Date());
 		serviceProvider.setLastUpdateDate(new Date());
 		providerRepository.save(serviceProvider);
+//		if(docs != null && !docs.isEmpty())
+//			storageService.saveServiceProviderLegalDocs(docs, serviceProvider.getId());
+//		if(profilePic != null)
+//			storageService.saveServiceProviderProfilePic(profilePic, serviceProvider.getId());
 	}
 	
 	public void update(ServiceProvider serviceProvider) {
