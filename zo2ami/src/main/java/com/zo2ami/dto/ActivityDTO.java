@@ -29,6 +29,8 @@ public class ActivityDTO implements Serializable {
 	
 	private int rateCount;
 	
+	private Boolean available;
+	
 	private CustomerDTO serviceProvider;
 	
 	@JsonFormat
@@ -149,6 +151,14 @@ public class ActivityDTO implements Serializable {
 	public void setRateCount(int rateCount) {
 		this.rateCount = rateCount;
 	}
+	
+	public Boolean getAvailable() {
+		return available;
+	}
+
+	public void setAvailable(Boolean available) {
+		this.available = available;
+	}
 
 	public ActivityDTO toDto(Activity activity) {
 		this.id = activity.getId();
@@ -163,6 +173,10 @@ public class ActivityDTO implements Serializable {
 		this.originalPrice = activity.getOriginalPrice();
 		this.discounted = activity.getDiscounted();
 		this.lastBookingDate = activity.getLastBookingDate();
+		if(activity.getLastBookingDate() != null)
+			this.available = activity.getLastBookingDate().before(new Date());
+		else if(activity.getStartDate() != null)
+			this.available = activity.getStartDate().before(new Date());
 		if(activity.getServiceProvider() != null)
 			this.serviceProvider = new CustomerDTO().toDto(activity.getServiceProvider());
 		return this;
